@@ -1,4 +1,4 @@
-﻿using EventBus.Events;
+﻿using Mango.EventBus.Events;
 using Mango.EventBus.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

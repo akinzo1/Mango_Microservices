@@ -1,5 +1,5 @@
 ﻿
-using EventBus.Events;
+using Mango.EventBus.Events;
 
 namespace Mango.EventBus.Abstractions;
 public interface IEventBus

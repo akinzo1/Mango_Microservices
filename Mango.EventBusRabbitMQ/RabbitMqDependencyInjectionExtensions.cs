@@ -20,29 +20,37 @@ public static class RabbitMqDependencyInjectionExtensions
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        builder.Services.AddMassTransit(x =>
-        {
-            // elided...
+        //builder.Services.AddMassTransit(x =>
+        //{
+        //    // elided...
 
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(new Uri("amqp://guest:guest@127.0.0.1:5672"), h =>
-                {
-                    h.Username("guest");
-                    h.Password("guest");
-                    h.ConnectionName(connectionName);
-                });
+        //    x.UsingRabbitMq((context, cfg) =>
+        //    {
+        //        cfg.Host(new Uri("amqp://guest:guest@127.0.0.1:5672"), h =>
+        //        {
+        //            h.Username("guest");
+        //            h.Password("guest");
+        //            h.ConnectionName(connectionName);
+        //        });
                 
-                cfg.ConfigureEndpoints(context);
-            });
+        //        cfg.ConfigureEndpoints(context);
+        //    });
+        //});
+
+        builder.AddRabbitMQClient(connectionName, configureSettings: settings =>
+        {
+            settings.ConnectionString = "amqp://guest:guest@127.0.0.1:5672";
+        }, configureConnectionFactory: factory =>
+        {
+            ((ConnectionFactory)factory).DispatchConsumersAsync = true;
         });
 
         // Options support
-        //builder.Services.Configure<EventBusOptions>(builder.Configuration.GetSection(SectionName));
+        builder.Services.Configure<EventBusOptions>(builder.Configuration.GetSection("EventBus"));
 
         // Abstractions on top of the core client API
         builder.Services.AddSingleton<IEventBus, RabbitMQEventBus>();
-      
+
         // Start consuming messages as soon as the application starts
         builder.Services.AddSingleton<IHostedService>(sp => (RabbitMQEventBus)sp.GetRequiredService<IEventBus>());
 

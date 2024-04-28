@@ -15,6 +15,9 @@ using Mango.EventBusRabbitMQ;
 using Mango.EventBus.Abstractions;
 using MassTransit;
 using RabbitMQ.Client;
+using Mango.EventBus.Extensions;
+using Mango.Services.OrderAPI.IntegrationEvents.Events;
+using Mango.Services.OrderAPI.IntegrationEvents.EventHandling;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,43 +36,10 @@ builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 
 builder.Services.AddScoped<IMessageBus, MessageBus>();
 
+builder.AddRabbitMqEventBus("eventbus")
+    .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
+//.AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
-//New
-
-//builder.Services.AddMassTransit(x =>
-//{
-//    // elided...
-
-//    x.UsingRabbitMq((context, cfg) =>
-//    {
-//        cfg.Host(new Uri("amqp://guest:guest@127.0.0.1:5672"), h =>
-//        {
-//            h.Username("guest");
-//            h.Password("guest");
-//        });
-
-//        cfg.ConfigureEndpoints(context);
-//    });
-//});
-
-
-builder.AddRabbitMQClient("eventbus", configureSettings: settings =>
-{
-    settings.ConnectionString = "amqp://guest:guest@127.0.0.1:5672";
-}, configureConnectionFactory: factory =>
-{
-    ((ConnectionFactory)factory).DispatchConsumersAsync = true;
-});
-
-
-// Options support
-builder.Services.Configure<EventBusOptions>(builder.Configuration.GetSection("EventBus"));
-
-// Abstractions on top of the core client API
-builder.Services.AddSingleton<IEventBus, RabbitMQEventBus>();
-
-// Start consuming messages as soon as the application starts
-builder.Services.AddSingleton<IHostedService>(sp => (RabbitMQEventBus)sp.GetRequiredService<IEventBus>());
 
 
 

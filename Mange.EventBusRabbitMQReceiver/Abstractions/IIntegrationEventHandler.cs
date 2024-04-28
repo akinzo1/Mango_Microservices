@@ -1,4 +1,4 @@
-﻿using EventBus.Events;
+﻿using Mango.EventBus.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;

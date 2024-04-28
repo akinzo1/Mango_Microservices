@@ -1,6 +1,6 @@
 ﻿using Mango.EventBus.Abstractions;
 using System.Text.Json;
-using EventBus.Events;
+using Mango.EventBus.Events;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 

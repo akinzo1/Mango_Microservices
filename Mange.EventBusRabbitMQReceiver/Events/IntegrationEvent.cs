@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace EventBus.Events;
+namespace Mango.EventBus.Events;
 public record IntegrationEvent
 {
     public IntegrationEvent()
