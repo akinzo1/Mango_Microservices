@@ -1,7 +1,7 @@
 ﻿
 namespace Mango.EventBusRabbitMQ;
 
-public class EventBusOptions
+public class EventBusOption
 {
     public string SubscriptionClientName { get; set; }
     public int RetryCount { get; set; } = 10;
