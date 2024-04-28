@@ -14,7 +14,7 @@ namespace Mango.EventBusRabbitMQ
     public sealed class RabbitMQEventBus(
         ILogger<RabbitMQEventBus> logger,
         IServiceProvider serviceProvider,
-        IOptions<EventBusOption> options,
+        IOptions<EventBusOptions> options,
         IOptions<EventBusSubscriptionInfo> subscriptionOptions) : IEventBus, IDisposable, IHostedService
     {
 

@@ -30,14 +30,15 @@ public static class RabbitMqDependencyInjectionExtensions
                 {
                     h.Username("guest");
                     h.Password("guest");
+                    h.ConnectionName(connectionName);
                 });
-
+                
                 cfg.ConfigureEndpoints(context);
             });
         });
 
         // Options support
-        //builder.Services.Configure<EventBusOption>(builder.Configuration.GetSection(SectionName));
+        //builder.Services.Configure<EventBusOptions>(builder.Configuration.GetSection(SectionName));
 
         // Abstractions on top of the core client API
         builder.Services.AddSingleton<IEventBus, RabbitMQEventBus>();
